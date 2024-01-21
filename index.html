@@ -1,1 +1,892 @@
-<h1>test</h1>
+<link rel="icon" type="image/x-icon" href="download.png">
+<style>
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    background-color: #fff;
+    font-family: sans-serif;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-weight: normal;
+    font-size: 140%;
+    margin: 10px;
+  }
+
+  #blocklyDiv {
+    float: bottom;
+    height: 90%;
+    width: 100%;
+  }
+  #objects {
+    height: 480px;
+    width: 150px;
+    border: 1px solid black;
+    position: absolute;
+    top: 8px;
+    left: 1180px;
+  }
+</style>
+
+<div id="blocklyDiv" style="width: 600px; height: 480px;"></div>
+<canvas id="game" style="position: absolute; top: 8px; left: 650px; width: 480px; height: 480px; border: 1px black solid;"></canvas>
+<button onclick="gencode()">run</button>
+<button onclick="savecode()">save as</button>
+<button onclick="loadcode()">load</button>
+<button onclick="reset()">new</button>
+<button onclick="addcube()" style="position: absolute; top: 500px; left: 1180px;">create cube</button>
+<div id="objects"></div>
+
+<!-- Toolbox Definition -->
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-categories" style="display: none">
+  <category name="3D" categorystyle="list_category">
+    <block type="d3_newcube"></block>
+    <block type="d3_newlight"></block>
+    <block type="move_object_var"></block>
+    <block type="set_object_texture"></block>
+    <block type="set_object_rot"></block>
+    <block type="get_object_prop"></block>
+    <block type="set_obj_effect"></block>
+    <block type="rot_object_around"></block>
+    <block type="sky_color"></block>
+  </category>
+  <category name="Input" categorystyle="colour_category">
+    <block type="input_keypressed"></block>
+    <block type="input_mouse_pos"></block>
+    <block type="input_mouse_down"></block>
+  </category>
+  <category name="Logic" categorystyle="logic_category">
+    <block type="controls_if"></block>
+    <block type="logic_compare"></block>
+    <block type="logic_operation"></block>
+    <block type="logic_negate"></block>
+    <block type="logic_boolean"></block>
+    <block type="logic_null" disabled="true"></block>
+    <block type="logic_ternary"></block>
+    <block type="unix_time"></block>
+  </category>
+  <category name="Loops" categorystyle="loop_category">
+    <block type="controls_repeat_ext">
+      <value name="TIMES">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="controls_repeat" disabled="true"></block>
+    <block type="controls_whileUntil"></block>
+    <block type="controls_for">
+      <value name="FROM">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="TO">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+      <value name="BY">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="controls_forEach"></block>
+    <block type="controls_flow_statements"></block>
+  </category>
+  <category name="Math" categorystyle="math_category">
+    <block type="math_number" gap="32">
+      <field name="NUM">123</field>
+    </block>
+    <block type="math_arithmetic">
+      <value name="A">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="B">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_single">
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">9</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_trig">
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">45</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_constant"></block>
+    <block type="math_number_property">
+      <value name="NUMBER_TO_CHECK">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_round">
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">3.1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_on_list"></block>
+    <block type="math_modulo">
+      <value name="DIVIDEND">
+        <shadow type="math_number">
+          <field name="NUM">64</field>
+        </shadow>
+      </value>
+      <value name="DIVISOR">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_constrain">
+      <value name="VALUE">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+      </value>
+      <value name="LOW">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="HIGH">
+        <shadow type="math_number">
+          <field name="NUM">100</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_random_int">
+      <value name="FROM">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="TO">
+        <shadow type="math_number">
+          <field name="NUM">100</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_random_float"></block>
+    <block type="math_atan2">
+      <value name="X">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="Y">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <category name="Text" categorystyle="text_category">
+    <block type="text"></block>
+    <block type="text_multiline"></block>
+    <block type="text_join"></block>
+    <block type="text_append">
+      <value name="TEXT">
+        <shadow type="text"></shadow>
+      </value>
+    </block>
+    <block type="text_length">
+      <value name="VALUE">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="text_isEmpty">
+      <value name="VALUE">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+    </block>
+    <block type="text_indexOf">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">text</field>
+        </block>
+      </value>
+      <value name="FIND">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="text_charAt">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">text</field>
+        </block>
+      </value>
+    </block>
+    <block type="text_getSubstring">
+      <value name="STRING">
+        <block type="variables_get">
+          <field name="VAR">text</field>
+        </block>
+      </value>
+    </block>
+    <block type="text_changeCase">
+      <value name="TEXT">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="text_trim">
+      <value name="TEXT">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="text_count">
+      <value name="SUB">
+        <shadow type="text"></shadow>
+      </value>
+      <value name="TEXT">
+        <shadow type="text"></shadow>
+      </value>
+    </block>
+    <block type="text_replace">
+      <value name="FROM">
+        <shadow type="text"></shadow>
+      </value>
+      <value name="TO">
+        <shadow type="text"></shadow>
+      </value>
+      <value name="TEXT">
+        <shadow type="text"></shadow>
+      </value>
+    </block>
+    <block type="text_reverse">
+      <value name="TEXT">
+        <shadow type="text"></shadow>
+      </value>
+    </block>
+    <label text="Input/Output:" web-class="ioLabel"></label>
+    <block type="text_print">
+      <value name="TEXT">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="text_prompt_ext">
+      <value name="TEXT">
+        <shadow type="text">
+          <field name="TEXT">abc</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <category name="Lists" categorystyle="list_category">
+    <block type="lists_create_with">
+      <mutation items="0"></mutation>
+    </block>
+    <block type="lists_create_with"></block>
+    <block type="lists_repeat">
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">5</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="lists_length"></block>
+    <block type="lists_isEmpty"></block>
+    <block type="lists_indexOf">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">list</field>
+        </block>
+      </value>
+    </block>
+    <block type="lists_getIndex">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">list</field>
+        </block>
+      </value>
+    </block>
+    <block type="lists_setIndex">
+      <value name="LIST">
+        <block type="variables_get">
+          <field name="VAR">list</field>
+        </block>
+      </value>
+    </block>
+    <block type="lists_getSublist">
+      <value name="LIST">
+        <block type="variables_get">
+          <field name="VAR">list</field>
+        </block>
+      </value>
+    </block>
+    <block type="lists_split">
+      <value name="DELIM">
+        <shadow type="text">
+          <field name="TEXT">,</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="lists_sort"></block>
+    <block type="lists_reverse"></block>
+  </category>
+  <category name="Colour" categorystyle="colour_category">
+    <block type="colour_picker"></block>
+    <block type="colour_random"></block>
+    <block type="colour_rgb">
+      <value name="RED">
+        <shadow type="math_number">
+          <field name="NUM">100</field>
+        </shadow>
+      </value>
+      <value name="GREEN">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+      </value>
+      <value name="BLUE">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="colour_blend">
+      <value name="COLOUR1">
+        <shadow type="colour_picker">
+          <field name="COLOUR">#ff0000</field>
+        </shadow>
+      </value>
+      <value name="COLOUR2">
+        <shadow type="colour_picker">
+          <field name="COLOUR">#3333ff</field>
+        </shadow>
+      </value>
+      <value name="RATIO">
+        <shadow type="math_number">
+          <field name="NUM">0.5</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <sep></sep>
+  <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+  <category name="Functions" categorystyle="procedure_category" custom="PROCEDURE"></category>
+</xml>
+
+
+<title>yar blockly</title>
+<script src="https://unpkg.com/blockly/blockly.min.js"></script>
+<script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
+<script src="https://unpkg.com/@blockly/disable-top-blocks@0.4.8/dist/index.js"></script>
+<script src="three.js"></script>
+<script>
+  //other
+
+  //threejs
+  var objects = [];
+  var idcount = 0;
+  var addedobj = []; //pre added objects
+
+  //blockly
+  var mousedown = false;
+  var saveslot = null;
+  var workspace;
+  var keysdown = [];
+  var mousex = 0;
+  var mousey = 0;
+
+  workspace = Blockly.inject('blocklyDiv', {toolbox: document.getElementById('toolbox-categories')});
+
+  workspace.addChangeListener(Blockly.Events.disableOrphans);
+
+  function reset() {
+  Blockly.serialization.workspaces.load({"blocks": {"languageVersion": 0, "blocks": [{"type": "procedures_defnoreturn", "id": "zYvAW*dal.FX43=gdZVs", "x": 180, "y": 150, "icons": {"comment": {"text": "Runs once on start.", "pinned": false, "height": 80, "width": 160}}, "fields": {"NAME": "start"}}, {"type": "procedures_defnoreturn", "id": "2VNPKpl[[^HPvRyjD5=f", "x": 180, "y": 250, "icons": {"comment": {"text": "Runs in an infinite loop.", "pinned": false, "height": 80, "width": 160}}, "fields": {"NAME": "loop"}}]}}, workspace);
+  }
+  reset();
+
+
+  Blockly.Blocks['d3_newcube'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("New Cube")
+        .appendField(new Blockly.FieldColour("#ff0000"), "color")
+        .appendField("With name")
+        .appendField(new Blockly.FieldTextInput("cube"), "name");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+      this.setTooltip("Makes a new cube");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['d3_newlight'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("New Light")
+        .appendField(new Blockly.FieldColour("#ff0000"), "color")
+        .appendField("With name")
+        .appendField(new Blockly.FieldTextInput("cube"), "name")
+        .appendField("With Brightness")
+        .appendField(new Blockly.FieldNumber(0), "numero");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+      this.setTooltip("Makes a new light");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['move_object_var'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Move")
+        .appendField(new Blockly.FieldTextInput("object"), "object")
+        .appendField("To Position");
+      this.appendValueInput("posx")
+        .setCheck("Number")
+        .appendField("X:");
+      this.appendValueInput("posy")
+        .setCheck("Number")
+        .appendField("Y:");
+      this.appendValueInput("posz")
+        .setCheck("Number")
+        .appendField("Z:");
+      this.setInputsInline(true);
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(270);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+
+  Blockly.Blocks['set_object_texture'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Set")
+        .appendField(new Blockly.FieldTextInput("object"), "object")
+        .appendField("Texture To")
+        .appendField(new Blockly.FieldDropdown([[{"src": "https://daxtonb.com/cdn/yar2/brick.jpg", "width": 15, "height": 15, "alt": "Brick"}, "brick"], [{"src": "https://daxtonb.com/cdn/yar2/crate.jpg", "width": 15, "height": 15, "alt": "Crate"}, "crate"], [{"src": "https://daxtonb.com/cdn/yar2/grass.jpg", "width": 15, "height": 15, "alt": "Grass"}, "grass"], [{"src": "https://daxtonb.com/cdn/yar2/stone.jpg", "width": 15, "height": 15, "alt": "Stone"}, "stone"]]), "texture");
+      this.setColour(270);
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setTooltip("Sets the texture of an object");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['set_object_rot'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Rotate")
+        .appendField(new Blockly.FieldTextInput("object"), "object")
+        .appendField("To Direction");
+      this.appendValueInput("posx")
+        .setCheck("Number")
+        .appendField("X:");
+      this.appendValueInput("posy")
+        .setCheck("Number")
+        .appendField("Y:");
+      this.appendValueInput("posz")
+        .setCheck("Number")
+        .appendField("Z:");
+      this.setInputsInline(true);
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(270);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['get_object_prop'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["X", "x"], ["Y", "y"], ["Z", "z"]]), "axis")
+        .appendField(new Blockly.FieldDropdown([["Position", "position"], ["Rotation", "rotation"], ["Scale", "scale"]]), "type")
+        .appendField("Of")
+        .appendField(new Blockly.FieldTextInput("object"), "object");
+      this.setInputsInline(true);
+      this.setOutput(true, null);
+      this.setColour(270);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['input_keypressed'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Is key")
+        .appendField(new Blockly.FieldDropdown([["Up Arrow", "ArrowUp"], ["Down Arrow", "ArrowDown"], ["Left Arrow", "ArrowLeft"], ["Right Arrow", "ArrowRight"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"], ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"], ["0", "0"], ["a", "a"], ["b", "b"], ["c", "c"], ["d", "d"], ["e", "e"], ["f", "f"], ["g", "g"], ["h", "h"], ["i", "i"], ["j", "j"], ["k", "k"], ["l", "l"], ["m", "m"], ["n", "n"], ["o", "o"], ["p", "p"], ["q", "q"], ["r", "r"], ["s", "s"], ["t", "t"], ["u", "u"], ["v", "v"], ["w", "w"], ["x", "x"], ["y", "y"], ["z", "z"]]), "NAME")
+        .appendField("Pressed?");
+      this.setOutput(true, null);
+      this.setColour(60);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['input_mouse_pos'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Mouse")
+        .appendField(new Blockly.FieldDropdown([["X", "x"], ["Y", "y"]]), "axis")
+        .appendField("Position");
+      this.setOutput(true, null);
+      this.setColour(60);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['input_mouse_down'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Mouse Down?");
+      this.setOutput(true, null);
+      this.setColour(60);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['rot_object_around'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("make")
+          .appendField(new Blockly.FieldTextInput("camera"), "object")
+          .appendField("look at")
+          .appendField(new Blockly.FieldTextInput("object"), "lookobject");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(270);
+   this.setTooltip("");
+   this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['unix_time'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Seconds since 1970");
+      this.setOutput(true, null);
+      this.setColour(210);
+   this.setTooltip("");
+   this.setHelpUrl("");
+    }
+  };
+
+  Blockly.Blocks['sky_color'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Set Sky color to")
+          .appendField(new Blockly.FieldColour("#ff0000"), "color");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(270);
+   this.setTooltip("");
+   this.setHelpUrl("");
+    }
+  };
+  
+  Blockly.JavaScript.forBlock['d3_newcube'] = function (block, generator) {
+    var color = block.getFieldValue('color');
+    var name = block.getFieldValue('name');
+
+    var code = 'globalThis.cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({color: "color_value"})); scene.add(cube); cube.castShadow = true; cube.receiveShadow = true;';
+    code = code.replace(/cube/g, name);
+    code = code.replace(/color_value/g, color);
+    return code;
+  };
+
+  Blockly.JavaScript.forBlock['d3_newlight'] = function (block, generator) {
+    var color = block.getFieldValue('color');
+    var name = block.getFieldValue('name');
+    var brightness = block.getFieldValue('numero');
+
+    var code = 'var plight = new THREE.DirectionalLight("color_value", int_val); plight.castShadow = true; scene.add(plight);';
+    code = code.replace(/plight/g, name);
+    code = code.replace(/color_value/g, color);
+    code = code.replace(/int_val/g, brightness);
+    return code;
+  };
+
+  var prev = null;
+
+  Blockly.JavaScript.forBlock['move_object_var'] = function (block, generator) {
+    var object = block.getFieldValue('object');
+    var x = generator.valueToCode(block, 'posx', javascript.Order.ATOMIC);
+    var y = generator.valueToCode(block, 'posy', javascript.Order.ATOMIC);
+    var z = generator.valueToCode(block, 'posz', javascript.Order.ATOMIC);
+
+    var code = 'object_var.position.x = object_x; object_var.position.y = object_y; object_var.position.z = object_z;';
+    code = code.replace(/object_var/g, object);
+    code = code.replace(/object_x/g, x);
+    code = code.replace(/object_y/g, y);
+    code = code.replace(/object_z/g, z);
+    return code;
+  };
+
+
+  javascript.javascriptGenerator.forBlock['set_object_texture'] = function (block, generator) {
+    var object = block.getFieldValue('object');
+    var texture = block.getFieldValue('texture');
+    // TODO: Assemble javascript into code variable.
+    var code = "var loader = new THREE.TextureLoader(); object_set.material = new THREE.MeshStandardMaterial({map: loader.load('textures/texture_set.jpg')});";
+    code = code.replace(/object_set/g, object);
+    code = code.replace(/texture_set/g, texture);
+    return code;
+  };
+
+  javascript.javascriptGenerator.forBlock['set_object_rot'] = function (block, generator) {
+    var object = block.getFieldValue('object');
+    var posx = generator.valueToCode(block, 'posx', javascript.Order.ATOMIC);
+    var posy = generator.valueToCode(block, 'posy', javascript.Order.ATOMIC);
+    var posz = generator.valueToCode(block, 'posz', javascript.Order.ATOMIC);
+    // TODO: Assemble javascript into code variable.
+    var code = 'object_var.rotation.x = object_x; object_var.rotation.y = object_y; object_var.rotation.z = object_z;';
+    code = code.replace(/object_var/g, object);
+    code = code.replace(/object_x/g, posx);
+    code = code.replace(/object_y/g, posy);
+    code = code.replace(/object_z/g, posz);
+    return code;
+  };
+
+  javascript.javascriptGenerator.forBlock['get_object_prop'] = function (block, generator) {
+    var axis = block.getFieldValue('axis');
+    var object = block.getFieldValue('object');
+    var type = block.getFieldValue('type');
+    // TODO: Assemble javascript into code variable.
+    var code = 'object.type.axis';
+    code = code.replace(/object/g, object);
+    code = code.replace(/axis/g, axis);
+    code = code.replace(/type/g, type);
+    return [code, javascript.Order.ATOMIC];
+  };
+
+  javascript.javascriptGenerator.forBlock['sky_color'] = function(block, generator) {
+    var colour_color = block.getFieldValue('color');
+    // TODO: Assemble javascript into code variable.
+    var code = 'scene.background = new THREE.Color( "setcolor" ); hemlight.color = new THREE.Color( "setcolor" );';
+    code = code.replace(/setcolor/g, colour_color);
+    return code;
+  };
+
+
+  document.onkeydown = function (event) {
+    if (!keysdown.includes(event.key)) {
+      keysdown.push(event.key);
+    }
+  }
+
+  document.onkeyup = function (event) {
+    keysdown.splice(keysdown.indexOf(event.key), 1);
+  }
+
+
+  document.getElementById("game").onmousedown = function (event) {
+    mousedown = true;
+  }
+
+  document.getElementById("game").onmouseup = function (event) {
+    mousedown = false;
+  }
+
+  document.getElementById("game").onmousemove = function (event) {
+    mousex = event.clientX;
+    mousex = event.clientY;
+
+  }
+  javascript.javascriptGenerator.forBlock['input_keypressed'] = function (block, generator) {
+    var axis = block.getFieldValue('axis');
+    var code = 'mouseaxis;';
+    code = code.replace(/mouseaxis/g, axis);
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, javascript.Order.ATOMIC];
+  };
+
+
+  javascript.javascriptGenerator.forBlock['input_keypressed'] = function (block, generator) {
+    var dropdown_name = block.getFieldValue('NAME');
+    // i forgor to change field name. too lazy to do so.
+    var code = 'keysdown.includes(key_val);';
+    code = code.replace(/key_val/g, dropdown_name);
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, javascript.Order.ATOMIC];
+  };
+
+  javascript.javascriptGenerator.forBlock['input_mouse_down'] = function (block, generator) {
+    // TODO: Assemble javascript into code variable.
+    var code = 'mousedown';
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, javascript.Order.ATOMIC];
+  };
+
+  Blockly.Blocks['set_obj_effect'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Add")
+        .appendField(new Blockly.FieldDropdown([["wireframe", "wireframe"], ["transparent", "transparent"], ["shiny", "shiny"]]), "effect")
+        .appendField("Effect to")
+        .appendField(new Blockly.FieldTextInput("object"), "object");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(270);
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
+  javascript.javascriptGenerator.forBlock['set_obj_effect'] = function (block, generator) {
+    var dropdown_effect = block.getFieldValue('effect');
+    var text_object = block.getFieldValue('object');
+    // TODO: Assemble javascript into code variable.
+    var code = ""
+    if(dropdown_effect == "wireframe") {
+      code = 'object.material.wireframe = true;';
+    }
+    if(dropdown_effect == "transparent") {
+      code = 'object.material.transparent = true; object.material.opacity = 0.5; object.roughness = 0;';
+    }
+    if(dropdown_effect == "shiny") {
+      code = 'object.material.metalness = 0.9; object.material.roughness = 0;';
+    }
+    code = code.replace(/object/g, text_object);
+    return code;
+  };
+
+  javascript.javascriptGenerator.forBlock['rot_object_around'] = function(block, generator) {
+    var text_object = block.getFieldValue('object');
+    var text_lookobject = block.getFieldValue('lookobject');
+    // TODO: Assemble javascript into code variable.
+    var code = 'object.lookAt(lookobjct.position);';
+    code = code.replace(/object/g, text_object);
+    code = code.replace(/lookobjct/g, text_lookobject);
+    return code;
+  };
+
+  javascript.javascriptGenerator.forBlock['unix_time'] = function(block, generator) {
+    // TODO: Assemble javascript into code variable.
+    var code = 'Date.now()';
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, javascript.Order.ATOMIC];
+  };
+  
+  function gencode() {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 400 / 400, 0.1, 1000);
+
+    const renderer = new THREE.WebGLRenderer({canvas: game});
+    renderer.setSize(480, 480);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    scene.background = new THREE.Color('black');
+
+    const hemlight = new THREE.HemisphereLight(0xffffff, 0x080808, 1);
+    scene.add(hemlight);
+
+    for (var items = 0; items < addedobj; items++ ) {
+      cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({color: "color_value"}));         
+      scene.add(cube); 
+      cube.castShadow = true; 
+      cube.receiveShadow = true;
+    }
+
+    camera.position.z = 5;
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+    if (prev != null) {
+      clearInterval(prev);
+    }
+    Blockly.JavaScript.addReservedWords('code');
+    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    console.log(code);
+
+    //scene.add(hemlight);
+    eval(code);
+    start();
+    prev = setInterval(loop, 10);
+    //return code;
+  }
+
+  function savecode() {
+    var saveslotd = prompt("Enter the name to save your project as:");
+    var jsond = JSON.parse(localStorage.getItem("save"));
+    if(jsond == null) {
+      jsond = [];
+    }
+    jsond.push([JSON.stringify(Blockly.serialization.workspaces.save(workspace)), saveslotd]);
+    localStorage.setItem("save", JSON.stringify(jsond));
+  }
+
+  function loadcode() {
+    var slotname = prompt("Enter the name of the save to get:");
+    //TODO make slotname find json key and read from it
+    //also add save list
+    var jsonl = JSON.parse(localStorage.getItem("save"))
+    var found = false;
+    for(var i = 0; i < jsonl.length; i++) {
+      if(jsonl[i][1] == slotname) {
+        Blockly.serialization.workspaces.load(JSON.parse(jsonl[i][0]), workspace);
+        found = true;
+        break
+      }
+    }
+    if(!found) {
+      alert('No save found with name:' + slotname);
+    }
+  }
+  function loadsyscode(code) {
+    Blockly.serialization.workspaces.load(JSON.parse(code), workspace);
+  }
+
+  if (localStorage.getItem("first") == null) {
+    localStorage.setItem("first", "true");
+    loadsyscode('{"blocks":{"languageVersion":0,"blocks":[{"type":"procedures_defnoreturn","id":"zYvAW*dal.FX43=gdZVs","x":25,"y":52,"icons":{"comment":{"text":"Runs once on start.","pinned":false,"height":80,"width":160}},"fields":{"NAME":"start"},"inputs":{"STACK":{"block":{"type":"d3_newlight","id":"_MnUTt$YibG?zcJo,9wf","fields":{"color":"#ffffff","name":"light","numero":5},"next":{"block":{"type":"move_object_var","id":"h[*Eqim_:==20^;H6;|a","fields":{"object":"light"},"inputs":{"posx":{"block":{"type":"math_number","id":"Q~Xq,o;/OuR%}A-Bn[5%","fields":{"NUM":0}}},"posy":{"block":{"type":"math_number","id":"o]$JyIV#.8+lva797Pf)","fields":{"NUM":3}}},"posz":{"block":{"type":"math_number","id":"NJ=8@8^:ELlI/8oYl.QM","fields":{"NUM":0}}}},"next":{"block":{"type":"d3_newcube","id":"q,g),J;QGz+vHYZzq;`N","fields":{"color":"#ffffff","name":"metal"},"next":{"block":{"type":"set_obj_effect","id":"ML^*ZIfPI{]VWY;`A%y2","fields":{"effect":"shiny","object":"metal"},"next":{"block":{"type":"d3_newcube","id":"U4h@ICz6%7ywOa[W4~.d","fields":{"color":"#ffffff","name":"clear"},"next":{"block":{"type":"set_obj_effect","id":"abmIF:iLn[Q3S:+|yG-F","fields":{"effect":"transparent","object":"clear"},"next":{"block":{"type":"move_object_var","id":"wY?{Z}:x6mFTA5}Jg8uJ","fields":{"object":"clear"},"inputs":{"posx":{"block":{"type":"math_number","id":"|R(.E6N?`o-D+%ylnr$1","fields":{"NUM":-1.5}}},"posy":{"block":{"type":"math_number","id":"8R.7grC-z!/@O@lF8FYC","fields":{"NUM":0}}},"posz":{"block":{"type":"math_number","id":"GTZAS(?(UO@69pIjf-YB","fields":{"NUM":0}}}},"next":{"block":{"type":"d3_newcube","id":"04/=b4PZsXJH-~~{Y;Q(","fields":{"color":"#ffffff","name":"wire"},"next":{"block":{"type":"set_obj_effect","id":"-dxcv6=|dj-PGG}?4U.u","fields":{"effect":"wireframe","object":"wire"},"next":{"block":{"type":"move_object_var","id":".:O79hhngm=3^]4u-74_","fields":{"object":"wire"},"inputs":{"posx":{"block":{"type":"math_number","id":"K$NaUJvWAW4up}Z;nU@B","fields":{"NUM":1.5}}},"posy":{"block":{"type":"math_number","id":"Z:BAIo!f}}*:bzWW,kE6","fields":{"NUM":0}}},"posz":{"block":{"type":"math_number","id":"pMs~7xYaCin14+6WJiXI","fields":{"NUM":0}}}},"next":{"block":{"type":"variables_set","id":"ue*|)CPRo3e;]NARQx)~","fields":{"VAR":{"id":"q8f#1$D~^!;RjuW%5M7:"}},"inputs":{"VALUE":{"block":{"type":"math_number","id":":[XFEc$:J7@qU%3?R4W5","fields":{"NUM":0}}}}}}}}}}}}}}}}}}}}}}}}}}}},{"type":"procedures_defnoreturn","id":"2VNPKpl[[^HPvRyjD5=f","x":27,"y":460,"icons":{"comment":{"text":"Runs in an infinite loop.","pinned":false,"height":80,"width":160}},"fields":{"NAME":"loop"},"inputs":{"STACK":{"block":{"type":"math_change","id":"B5p=-*aXtK~[n66J?2O,","fields":{"VAR":{"id":"q8f#1$D~^!;RjuW%5M7:"}},"inputs":{"DELTA":{"shadow":{"type":"math_number","id":"rD}Bq5lr0-ZG4%bLkn2g","fields":{"NUM":1}},"block":{"type":"math_number","id":"?tW}?Yo4Q{CvF3k4D{62","fields":{"NUM":0.01}}}},"next":{"block":{"type":"set_object_rot","id":"3~eXijhCzkIq^fZ(YWm4","fields":{"object":"metal"},"inputs":{"posx":{"block":{"type":"variables_get","id":"oH+Ji3#n]w!oj0m)b^/R","fields":{"VAR":{"id":"q8f#1$D~^!;RjuW%5M7:"}}}},"posy":{"block":{"type":"math_number","id":"9@_h`8ljQ4DhzfP+y2hG","fields":{"NUM":0}}},"posz":{"block":{"type":"math_number","id":";{hDMefRnTvaX#8LEwA*","fields":{"NUM":0}}}},"next":{"block":{"type":"set_object_rot","id":"%$ca!`:[b!QcqzK/IU:.","fields":{"object":"clear"},"inputs":{"posx":{"block":{"type":"variables_get","id":"n--;u3V_H^OBW+^wOE4b","fields":{"VAR":{"id":"q8f#1$D~^!;RjuW%5M7:"}}}},"posy":{"block":{"type":"math_number","id":"{Y|h$1%enL8R/i#OGM(Y","fields":{"NUM":0}}},"posz":{"block":{"type":"math_number","id":"jEhO]/Zo}?=$9s`L/BM*","fields":{"NUM":0}}}},"next":{"block":{"type":"set_object_rot","id":"ux/1kaS1YH(8J/k1w2Z~","fields":{"object":"wire"},"inputs":{"posx":{"block":{"type":"variables_get","id":"$DeQ[S7JPNSeL$aMRQ7y","fields":{"VAR":{"id":"q8f#1$D~^!;RjuW%5M7:"}}}},"posy":{"block":{"type":"math_number","id":"9wO1w9=|v_.ex+P11A~z","fields":{"NUM":0}}},"posz":{"block":{"type":"math_number","id":"$6=#0-E$5|*~ZTRa:ZF$","fields":{"NUM":0}}}},"next":{"block":{"type":"move_object_var","id":";G;~^8mTBCv*r`I*3FL]","fields":{"object":"camera"},"inputs":{"posx":{"block":{"type":"math_arithmetic","id":"U.*x{y}(wO;b[JSIOTcP","fields":{"OP":"MULTIPLY"},"inputs":{"A":{"shadow":{"type":"math_number","id":"O$IL]0f[(1J!@UBK#3;j","fields":{"NUM":1}},"block":{"type":"math_number","id":"z:$2V{NN*-9*k7.H}4|q","fields":{"NUM":3}}},"B":{"shadow":{"type":"math_number","id":"h}C@P}`BI@l490`^do{h","fields":{"NUM":1}},"block":{"type":"math_trig","id":"AVbfQ-.bD4^1@Q/.}K=_","fields":{"OP":"SIN"},"inputs":{"NUM":{"shadow":{"type":"math_number","id":"2hbSuS8,t*}L5KpGaQ_5","fields":{"NUM":45}},"block":{"type":"math_arithmetic","id":"1tV}QXN.p:Lj#{;Q_PL3","fields":{"OP":"MULTIPLY"},"inputs":{"A":{"shadow":{"type":"math_number","id":"/U=mVNn~9,|!tW8eE~zC","fields":{"NUM":1}},"block":{"type":"variables_get","id":"Hgq:3f)Q#z(Sau#=~V:}","fields":{"VAR":{"id":"q8f#1$D~^!;RjuW%5M7:"}}}},"B":{"shadow":{"type":"math_number","id":"Q*[c}44iUF71.K~7qb7R","fields":{"NUM":10}}}}}}}}}}}},"posy":{"block":{"type":"math_number","id":"eDt[eG5m!k2.@af,1/_;","fields":{"NUM":3}}},"posz":{"block":{"type":"math_arithmetic","id":"_t/erClLoX5.NkP#bYvl","fields":{"OP":"MULTIPLY"},"inputs":{"A":{"shadow":{"type":"math_number","id":"O$IL]0f[(1J!@UBK#3;j","fields":{"NUM":1}},"block":{"type":"math_number","id":"mS.?{t^ZZ)t8iR/|3K/a","fields":{"NUM":3}}},"B":{"shadow":{"type":"math_number","id":"h}C@P}`BI@l490`^do{h","fields":{"NUM":1}},"block":{"type":"math_trig","id":"kfwZRK[[IRjjet9u}RP_","fields":{"OP":"COS"},"inputs":{"NUM":{"shadow":{"type":"math_number","id":"2hbSuS8,t*}L5KpGaQ_5","fields":{"NUM":45}},"block":{"type":"math_arithmetic","id":"eEQH,b#2pO4,l_US2CBx","fields":{"OP":"MULTIPLY"},"inputs":{"A":{"shadow":{"type":"math_number","id":"/U=mVNn~9,|!tW8eE~zC","fields":{"NUM":1}},"block":{"type":"variables_get","id":"q$1$:)6HZ})$DOGOn_n5","fields":{"VAR":{"id":"q8f#1$D~^!;RjuW%5M7:"}}}},"B":{"shadow":{"type":"math_number","id":"b9-8mfTAe#zJBIir{E^j","fields":{"NUM":10}}}}}}}}}}}}},"next":{"block":{"type":"rot_object_around","id":"F$Y~j_adO21K~*^.eg*b","fields":{"object":"camera","lookobject":"metal"}}}}}}}}}}}}}}}]},"variables":[{"name":"count","id":"q8f#1$D~^!;RjuW%5M7:"}]}');
+    gencode();
+  }
+
+  function exportcode() {
+    alert("Copy this code and save it or share it!: \n" + localStorage.getItem("save"));
+  }
+
+  function importcode() {
+    var codei = prompt("Enter your code down in the box below:");
+    localStorage.setItem("save", codei);
+  }
+</script>
