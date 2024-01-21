@@ -1,6 +1,6 @@
 make change scale block - not started
 make add plane object - not started
-make object manager - in progress
+make object manager - archived
 make unified localstorage save system with JSON - finished 1/18/24
 
 
