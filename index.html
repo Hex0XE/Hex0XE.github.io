@@ -561,7 +561,7 @@ button span span {
         .appendField("Set")
         .appendField(new Blockly.FieldTextInput("object"), "object")
         .appendField("Texture To")
-        .appendField(new Blockly.FieldDropdown([[{"src": "https://daxtonb.com/cdn/yar2/brick.jpg", "width": 15, "height": 15, "alt": "Brick"}, "brick"], [{"src": "https://daxtonb.com/cdn/yar2/crate.jpg", "width": 15, "height": 15, "alt": "Crate"}, "crate"], [{"src": "https://daxtonb.com/cdn/yar2/grass.jpg", "width": 15, "height": 15, "alt": "Grass"}, "grass"], [{"src": "https://daxtonb.com/cdn/yar2/stone.jpg", "width": 15, "height": 15, "alt": "Stone"}, "stone"]]), "texture");
+        .appendField(new Blockly.FieldDropdown([[{"src": "tex/brick.jpg", "width": 15, "height": 15, "alt": "Brick"}, "brick"], [{"src": "tex/crate.jpg", "width": 15, "height": 15, "alt": "Crate"}, "crate"], [{"src": "tex/grass.jpg", "width": 15, "height": 15, "alt": "Grass"}, "grass"], [{"src": "tex/stone.jpg", "width": 15, "height": 15, "alt": "Stone"}, "stone"]]), "texture");
       this.setColour(270);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -751,7 +751,7 @@ button span span {
     var object = block.getFieldValue('object');
     var texture = block.getFieldValue('texture');
     // TODO: Assemble javascript into code variable.
-    var code = "var loader = new THREE.TextureLoader(); object_set.material = new THREE.MeshStandardMaterial({map: loader.load('textures/texture_set.jpg')});";
+    var code = "var loader = new THREE.TextureLoader(); object_set.material = new THREE.MeshStandardMaterial({map: loader.load('tex/texture_set.jpg')});";
     code = code.replace(/object_set/g, object);
     code = code.replace(/texture_set/g, texture);
     return code;
