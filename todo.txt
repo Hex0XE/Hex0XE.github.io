@@ -1,4 +1,5 @@
 (major - low priority) - add map editor
+add dark theme - done
 make change prop blocks register 0 if null - not started
 make change scale block - done
 make add plane object - done + added sphere

@@ -1,12 +1,11 @@
 <link rel="icon" type="image/x-icon" href="download.png">
 <style>
-  html,
-  body {
+   body {
     height: 100%;
   }
 
   body {
-    background-color: #fff;
+    background-color: #303030;
     font-family: sans-serif;
     overflow: hidden;
   }
@@ -21,23 +20,53 @@
     float: bottom;
     height: 90%;
     width: 100%;
+    background-color: #141414;
   }
-  #objects {
-    height: 480px;
-    width: 150px;
-    border: 1px solid black;
-    position: absolute;
-    top: 8px;
-    left: 1180px;
+  .game {
+    border: 1px solid white;
+    position: absolute; 
+    top: 8px; 
+    left: 650px; 
+    width: 480px; 
+    height: 480px; 
   }
+  button {
+    background: none;
+    border: none;
+    padding: 0;   
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(75%);
+}
+
+button span {
+    display: block;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #999;
+    padding: 0;
+    background: #F0F0F0;
+    background: -moz-linear-gradient(top,  #F0F0F0 50%, #D4D4D4 50%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#F0F0F0), color-stop(50%,#D4D4D4));
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F0F0F0', endColorstr='#D4D4D4',GradientType=0 );
+}
+
+button span span {
+    border: 1px solid #fff;
+    padding: 10px;
+}
 </style>
 
 <div id="blocklyDiv" style="width: 600px; height: 480px;"></div>
-<canvas id="game" style="position: absolute; top: 8px; left: 650px; width: 480px; height: 480px; border: 1px black solid;"></canvas>
-<button onclick="gencode()">run</button>
-<button onclick="savecode()">save as</button>
-<button onclick="loadcode()">load</button>
-<button onclick="reset()">new</button>
+<canvas id="game" style="position: absolute; top: 8px; left: 650px; width: 480px; height: 480px; border: 1px white solid;"></canvas>
+<canvas id="UI" style="position: absolute; top: 8px; left: 650px; width: 480px; height: 480px; border: 1px white solid;"></canvas>
+<button onclick="gencode()"><span><span>run</span></span></button>
+<button onclick="savecode()"><span><span>save as</span></span></button>
+<button onclick="loadcode()"><span><span>load</span></span></button>
+<button onclick="reset()"><span><span>new</span></span></button>
 
 <!-- Toolbox Definition -->
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-categories" style="display: none">
@@ -405,7 +434,23 @@
 <script src="three.js"></script>
 <script>
   //other
-
+  Blockly.Theme.defineTheme('dark', {
+  base: Blockly.Themes.Classic,
+  componentStyles: {
+    workspaceBackgroundColour: '#1e1e1e',
+    toolboxBackgroundColour: 'blackBackground',
+    toolboxForegroundColour: '#fff',
+    flyoutBackgroundColour: '#252526',
+    flyoutForegroundColour: '#ccc',
+    flyoutOpacity: 1,
+    scrollbarColour: '#797979',
+    insertionMarkerColour: '#fff',
+    insertionMarkerOpacity: 0.3,
+    scrollbarOpacity: 0.4,
+    cursorColour: '#d0d0d0',
+    blackBackground: '#333',
+  },
+});
   //threejs
   var objects = [];
   var idcount = 0;
@@ -419,7 +464,7 @@
   var mousex = 0;
   var mousey = 0;
 
-  workspace = Blockly.inject('blocklyDiv', {toolbox: document.getElementById('toolbox-categories')});
+  workspace = Blockly.inject('blocklyDiv', {toolbox: document.getElementById('toolbox-categories'),  theme: "dark"});
 
   workspace.addChangeListener(Blockly.Events.disableOrphans);
 
@@ -771,7 +816,7 @@
     mousex = event.clientY;
 
   }
-  javascript.javascriptGenerator.forBlock['input_keypressed'] = function (block, generator) {
+  javascript.javascriptGenerator.forBlock['input_mouse_pos'] = function (block, generator) {
     var axis = block.getFieldValue('axis');
     var code = 'mouseaxis;';
     code = code.replace(/mouseaxis/g, axis);
@@ -783,7 +828,7 @@
   javascript.javascriptGenerator.forBlock['input_keypressed'] = function (block, generator) {
     var dropdown_name = block.getFieldValue('NAME');
     // i forgor to change field name. too lazy to do so.
-    var code = 'keysdown.includes(key_val);';
+    var code = 'keysdown.includes("key_val")';
     code = code.replace(/key_val/g, dropdown_name);
     // TODO: Change ORDER_NONE to the correct strength.
     return [code, javascript.Order.ATOMIC];
@@ -935,4 +980,7 @@
     var codei = prompt("Enter your code down in the box below:");
     localStorage.setItem("save", codei);
   }
+
+  //comment this to disable visitor counter \/
+  eval(atob("dmFyIHhtbEh0dHAgPSBuZXcgWE1MSHR0cFJlcXVlc3QoKTsgeG1sSHR0cC5vcGVuKCAiR0VUIiwgImh0dHBzOi8vZGF4dG9uYi5jb20veWFyYW5hbHl0aWNzL2NvdW50LnBocCIsIGZhbHNlICk7IHhtbEh0dHAuc2VuZCggbnVsbCApOyB4bWxIdHRwLnJlc3BvbnNlVGV4dDsgLy90byB3aG9ldmVyIGRlY29kZWQgdGhpcyBiYXNlNjQsIHRoaXMgaXMganVzdCBwcmV0dHkgbXVjaCBhIHZpc2l0b3IgY291bnRlciBvbmx5IG9uIG15IGVuZC4gbm8gdGhpcyBpcyBub3QgbWFsaWNpb3VzLCBhbmQgbm8gSSBkb250IHdhbnQgYWxsIHlvdXIgaW5mb3JtYXRpb24u"));
 </script>
