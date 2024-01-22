@@ -429,19 +429,19 @@
 
 
   Blockly.Blocks['d3_newcube'] = {
-    init: function () {
-      this.appendDummyInput()
-        .appendField("New Cube")
-        .appendField(new Blockly.FieldColour("#ff0000"), "color")
+  init: function() {
+    this.appendDummyInput()
+        .appendField("New")
+        .appendField(new Blockly.FieldDropdown([["Cube","cube"], ["Plane","plane"], ["Sphere","sphere"]]), "object")
         .appendField("With name")
-        .appendField(new Blockly.FieldTextInput("cube"), "name");
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(230);
-      this.setTooltip("Makes a new cube");
-      this.setHelpUrl("");
-    }
-  };
+        .appendField(new Blockly.FieldTextInput("object"), "name");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Makes a new 3D shape.");
+ this.setHelpUrl("");
+  }
+};
 
   Blockly.Blocks['d3_newlight'] = {
     init: function () {
@@ -616,12 +616,20 @@
   };
   
   Blockly.JavaScript.forBlock['d3_newcube'] = function (block, generator) {
-    var color = block.getFieldValue('color');
+    var shape = block.getFieldValue('object');
     var name = block.getFieldValue('name');
-
-    var code = 'globalThis.cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({color: "color_value"})); scene.add(cube); cube.castShadow = true; cube.receiveShadow = true;';
+    //this code was originally meant for making cubes, until I changed the block definition.
+    var code = "";
+    if(shape == "cube") {
+      code = 'globalThis.cube = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({color: "white"})); scene.add(cube); cube.castShadow = true; cube.receiveShadow = true;';
+    }
+    if(shape == "plane") {
+      code = 'globalThis.cube = new THREE.Mesh(new THREE.PlaneGeometry(), new THREE.MeshStandardMaterial({color: "white"})); scene.add(cube); cube.castShadow = true; cube.receiveShadow = true;';
+    }
+    if(shape == "sphere") {
+      code = 'globalThis.cube = new THREE.Mesh(new THREE.SphereGeometry(), new THREE.MeshStandardMaterial({color: "white"})); scene.add(cube); cube.castShadow = true; cube.receiveShadow = true;';
+    }
     code = code.replace(/cube/g, name);
-    code = code.replace(/color_value/g, color);
     return code;
   };
 
