@@ -1,5 +1,6 @@
 (major - low priority) - add map editor
-make change scale block - not started
+make change prop blocks register 0 if null - not started
+make change scale block - done
 make add plane object - done + added sphere
 make object manager - archived
 make unified localstorage save system with JSON - finished 1/18/24

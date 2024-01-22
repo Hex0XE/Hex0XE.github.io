@@ -484,6 +484,30 @@
     }
   };
 
+  Blockly.Blocks['object_resize'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Resize")
+        .appendField(new Blockly.FieldTextInput("object"), "object")
+        .appendField("To");
+    this.appendValueInput("posx")
+        .setCheck("Number")
+        .appendField("X:");
+    this.appendValueInput("posy")
+        .setCheck("Number")
+        .appendField("Y:");
+    this.appendValueInput("posz")
+        .setCheck("Number")
+        .appendField("Z:");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
 
   Blockly.Blocks['set_object_texture'] = {
     init: function () {
@@ -654,6 +678,21 @@
     var z = generator.valueToCode(block, 'posz', javascript.Order.ATOMIC);
 
     var code = 'object_var.position.x = object_x; object_var.position.y = object_y; object_var.position.z = object_z;';
+    code = code.replace(/object_var/g, object);
+    code = code.replace(/object_x/g, x);
+    code = code.replace(/object_y/g, y);
+    code = code.replace(/object_z/g, z);
+    return code;
+  };
+
+
+  Blockly.JavaScript.forBlock['object_resize'] = function (block, generator) {
+    var object = block.getFieldValue('object');
+    var x = generator.valueToCode(block, 'posx', javascript.Order.ATOMIC);
+    var y = generator.valueToCode(block, 'posy', javascript.Order.ATOMIC);
+    var z = generator.valueToCode(block, 'posz', javascript.Order.ATOMIC);
+
+    var code = 'object_var.scale.x = object_x; object_var.scale.y = object_y; object_var.scale.z = object_z;';
     code = code.replace(/object_var/g, object);
     code = code.replace(/object_x/g, x);
     code = code.replace(/object_y/g, y);
