@@ -1,6 +1,7 @@
 (major - low priority) - add map editor
+replace all non value inputs with shadow value inputs (all values not just text) - semi started
 add dark theme - done
-make change prop blocks register 0 if null - not started
+make change prop blocks register 0 if null - done
 make change scale block - done
 make add plane object - done + added sphere
 make object manager - archived

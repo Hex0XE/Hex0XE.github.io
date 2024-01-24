@@ -62,7 +62,7 @@ button span span {
 
 <div id="blocklyDiv" style="width: 600px; height: 480px;"></div>
 <canvas id="game" style="position: absolute; top: 8px; left: 650px; width: 480px; height: 480px; border: 1px white solid;"></canvas>
-<canvas id="UI" style="position: absolute; top: 8px; left: 650px; width: 480px; height: 480px; border: 1px white solid;"></canvas>
+<canvas id="UI" widht="480" height="480" style="position: absolute; top: 8px; left: 650px; width: 480px; height: 480px; border: 1px white solid;"></canvas>
 <button onclick="gencode()"><span><span>run</span></span></button>
 <button onclick="savecode()"><span><span>save as</span></span></button>
 <button onclick="loadcode()"><span><span>load</span></span></button>
@@ -70,25 +70,169 @@ button span span {
 
 <!-- Toolbox Definition -->
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-categories" style="display: none">
-  <category name="3D" categorystyle="list_category">
-    <block type="d3_newcube"></block>
-    <block type="d3_newlight"></block>
-    <block type="move_object_var"></block>
-    <block type="set_object_rot"></block>
-    <block type="object_resize"></block>
-    <block type="set_object_texture"></block>
-    <block type="get_object_prop"></block>
-    <block type="set_obj_effect"></block>
-    <block type="rot_object_around"></block>
-    <block type="sky_color"></block>
+  <category name="3D" categorystyle="cat_3d">
+    <block type="d3_newcube">
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="d3_newlight">
+      <value name="color">
+        <shadow type="colour_picker">
+          <field name="COLOUR">ff0000</field>
+        </shadow>
+      </value>
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">light</field>
+        </shadow>
+      </value>
+      <value name="brightness">
+        <shadow type="math_number">
+          <field name="NUM">2</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="move_object_var">
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+      <value name="posx">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="posy">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="posz">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="set_object_rot">
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+      <value name="posx">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="posy">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="posz">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="object_resize">
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+      <value name="posx">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="posy">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="posz">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="set_object_texture">
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="get_object_prop">
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="set_obj_effect">
+      <value name="name">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="rot_object_around">
+      <value name="object">
+        <shadow type="text">
+          <field name="TEXT">camera</field>
+        </shadow>
+      </value>
+      <value name="lookobject">
+        <shadow type="text">
+          <field name="TEXT">object</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="sky_color">
+      <value name="color">
+        <shadow type="colour_picker">
+          <field name="COLOUR">ff0000</field>
+        </shadow>
+      </value>
+    </block>
   </category>
-  <category name="Input" categorystyle="colour_category">
+  <category name="Input" categorystyle="cat_input">
     <block type="input_keypressed"></block>
     <block type="input_mouse_pos"></block>
     <block type="input_mouse_down"></block>
   </category>
-  <category name="UI" categorystyle="loop_category">
-    <block type="input_keypressed"></block>
+  <category name="UI" categorystyle="cat_ui">
+    <block type="ui_draw_text">
+      <value name="posx">
+        <shadow type="math_number">
+          <field name="NUM">200</field>
+        </shadow>
+      </value>
+      <value name="posy">
+        <shadow type="math_number">
+          <field name="NUM">200</field>
+        </shadow>
+      </value>
+      <value name="text">
+        <shadow type="text">
+          <field name="TEXT">Hello, World!</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="ui_color">
+      <value name="color">
+        <shadow type="colour_picker">
+          <field name="COLOUR">ff0000</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="clear_ui"></block>
   </category>
   <category name="Logic" categorystyle="logic_category">
     <block type="controls_if"></block>
@@ -436,9 +580,24 @@ button span span {
 <script src="https://unpkg.com/@blockly/disable-top-blocks@0.4.8/dist/index.js"></script>
 <script src="three.js"></script>
 <script>
+  //ui
+  const uicanvas = document.getElementById("UI"); 
+  const ctx = uicanvas.getContext("2d");
+  var UIobj = [["#ffffff"]];
   //other
   Blockly.Theme.defineTheme('dark', {
   base: Blockly.Themes.Classic,
+  categoryStyles : {
+    cat_3d : {
+      colour : "#349beb"
+    },
+    cat_input : {
+      colour : "#cfc75b"
+    },
+    cat_ui : {
+      colour : "#935bcf"
+    }
+  },
   componentStyles: {
     workspaceBackgroundColour: '#1e1e1e',
     toolboxBackgroundColour: 'blackBackground',
@@ -483,7 +642,9 @@ button span span {
         .appendField("New")
         .appendField(new Blockly.FieldDropdown([["Cube","cube"], ["Plane","plane"], ["Sphere","sphere"]]), "object")
         .appendField("With name")
-        .appendField(new Blockly.FieldTextInput("object"), "name");
+    this.appendValueInput("name")
+        .setCheck("String");
+    this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -496,11 +657,16 @@ button span span {
     init: function () {
       this.appendDummyInput()
         .appendField("New Light")
-        .appendField(new Blockly.FieldColour("#ff0000"), "color")
+      this.appendValueInput("color")
+        .setCheck("Colour");
+      this.appendDummyInput()
         .appendField("With name")
-        .appendField(new Blockly.FieldTextInput("cube"), "name")
+      this.appendValueInput("name")
+        .setCheck("String");
+      this.appendDummyInput()
         .appendField("With Brightness")
-        .appendField(new Blockly.FieldNumber(0), "numero");
+      this.appendValueInput("brightness")
+        .setCheck("Number");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(230);
@@ -513,7 +679,9 @@ button span span {
     init: function () {
       this.appendDummyInput()
         .appendField("Move")
-        .appendField(new Blockly.FieldTextInput("object"), "object")
+      this.appendValueInput("name")
+        .setCheck("String");
+      this.appendDummyInput()
         .appendField("To Position");
       this.appendValueInput("posx")
         .setCheck("Number")
@@ -537,7 +705,9 @@ button span span {
   init: function() {
     this.appendDummyInput()
         .appendField("Resize")
-        .appendField(new Blockly.FieldTextInput("object"), "object")
+        this.appendValueInput("name")
+        .setCheck("String");
+        this.appendDummyInput()
         .appendField("To");
     this.appendValueInput("posx")
         .setCheck("Number")
@@ -562,7 +732,9 @@ button span span {
     init: function () {
       this.appendDummyInput()
         .appendField("Set")
-        .appendField(new Blockly.FieldTextInput("object"), "object")
+      this.appendValueInput("name")
+        .setCheck("String");
+      this.appendDummyInput()
         .appendField("Texture To")
         .appendField(new Blockly.FieldDropdown([[{"src": "tex/brick.jpg", "width": 15, "height": 15, "alt": "Brick"}, "brick"], [{"src": "tex/crate.jpg", "width": 15, "height": 15, "alt": "Crate"}, "crate"], [{"src": "tex/grass.jpg", "width": 15, "height": 15, "alt": "Grass"}, "grass"], [{"src": "tex/stone.jpg", "width": 15, "height": 15, "alt": "Stone"}, "stone"], [{"src": "tex/earth.jpg", "width": 15, "height": 15, "alt": "Earth"}, "earth"]]), "texture");
       this.setColour(270);
@@ -577,7 +749,9 @@ button span span {
     init: function () {
       this.appendDummyInput()
         .appendField("Rotate")
-        .appendField(new Blockly.FieldTextInput("object"), "object")
+        this.appendValueInput("name")
+        .setCheck("String");
+        this.appendDummyInput()
         .appendField("To Direction");
       this.appendValueInput("posx")
         .setCheck("Number")
@@ -603,7 +777,8 @@ button span span {
         .appendField(new Blockly.FieldDropdown([["X", "x"], ["Y", "y"], ["Z", "z"]]), "axis")
         .appendField(new Blockly.FieldDropdown([["Position", "position"], ["Rotation", "rotation"], ["Scale", "scale"]]), "type")
         .appendField("Of")
-        .appendField(new Blockly.FieldTextInput("object"), "object");
+        this.appendValueInput("name")
+        .setCheck("String");
       this.setInputsInline(true);
       this.setOutput(true, null);
       this.setColour(270);
@@ -653,9 +828,13 @@ button span span {
     init: function() {
       this.appendDummyInput()
           .appendField("make")
-          .appendField(new Blockly.FieldTextInput("camera"), "object")
+      this.appendValueInput("object")
+        .setCheck("String");
+      this.appendDummyInput()
           .appendField("look at")
-          .appendField(new Blockly.FieldTextInput("object"), "lookobject");
+      this.appendValueInput("lookobject")
+        .setCheck("String");
+      this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(270);
@@ -679,7 +858,9 @@ button span span {
     init: function() {
       this.appendDummyInput()
           .appendField("Set Sky color to")
-          .appendField(new Blockly.FieldColour("#ff0000"), "color");
+      this.appendValueInput("color")
+        .setCheck("Colour");
+      this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(270);
@@ -690,7 +871,7 @@ button span span {
   
   Blockly.JavaScript.forBlock['d3_newcube'] = function (block, generator) {
     var shape = block.getFieldValue('object');
-    var name = block.getFieldValue('name');
+    var name = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");
     //this code was originally meant for making cubes, until I changed the block definition.
     var code = "";
     if(shape == "cube") {
@@ -707,9 +888,9 @@ button span span {
   };
 
   Blockly.JavaScript.forBlock['d3_newlight'] = function (block, generator) {
-    var color = block.getFieldValue('color');
-    var name = block.getFieldValue('name');
-    var brightness = block.getFieldValue('numero');
+    var color = generator.valueToCode(block, 'color', javascript.Order.ATOMIC).replace(/'/g, "");
+    var name = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");;
+    var brightness = generator.valueToCode(block, 'brightness', javascript.Order.ATOMIC);
 
     var code = 'var plight = new THREE.DirectionalLight("color_value", int_val); plight.castShadow = true; scene.add(plight);';
     code = code.replace(/plight/g, name);
@@ -721,7 +902,7 @@ button span span {
   var prev = null;
 
   Blockly.JavaScript.forBlock['move_object_var'] = function (block, generator) {
-    var object = block.getFieldValue('object');
+    var object = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");;
     var x = generator.valueToCode(block, 'posx', javascript.Order.ATOMIC);
     var y = generator.valueToCode(block, 'posy', javascript.Order.ATOMIC);
     var z = generator.valueToCode(block, 'posz', javascript.Order.ATOMIC);
@@ -736,7 +917,7 @@ button span span {
 
 
   Blockly.JavaScript.forBlock['object_resize'] = function (block, generator) {
-    var object = block.getFieldValue('object');
+    var object = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");;
     var x = generator.valueToCode(block, 'posx', javascript.Order.ATOMIC);
     var y = generator.valueToCode(block, 'posy', javascript.Order.ATOMIC);
     var z = generator.valueToCode(block, 'posz', javascript.Order.ATOMIC);
@@ -751,7 +932,7 @@ button span span {
 
 
   javascript.javascriptGenerator.forBlock['set_object_texture'] = function (block, generator) {
-    var object = block.getFieldValue('object');
+    var object = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");;
     var texture = block.getFieldValue('texture');
     // TODO: Assemble javascript into code variable.
     var code = "var loader = new THREE.TextureLoader(); object_set.material = new THREE.MeshStandardMaterial({map: loader.load('tex/texture_set.jpg')});";
@@ -761,7 +942,7 @@ button span span {
   };
 
   javascript.javascriptGenerator.forBlock['set_object_rot'] = function (block, generator) {
-    var object = block.getFieldValue('object');
+    var object = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");;
     var posx = generator.valueToCode(block, 'posx', javascript.Order.ATOMIC);
     var posy = generator.valueToCode(block, 'posy', javascript.Order.ATOMIC);
     var posz = generator.valueToCode(block, 'posz', javascript.Order.ATOMIC);
@@ -776,7 +957,7 @@ button span span {
 
   javascript.javascriptGenerator.forBlock['get_object_prop'] = function (block, generator) {
     var axis = block.getFieldValue('axis');
-    var object = block.getFieldValue('object');
+    var object = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");;
     var type = block.getFieldValue('type');
     // TODO: Assemble javascript into code variable.
     var code = 'object.type.axis';
@@ -787,7 +968,7 @@ button span span {
   };
 
   javascript.javascriptGenerator.forBlock['sky_color'] = function(block, generator) {
-    var colour_color = block.getFieldValue('color');
+    var colour_color = generator.valueToCode(block, 'color', javascript.Order.ATOMIC).replace(/'/g, "");
     // TODO: Assemble javascript into code variable.
     var code = 'scene.background = new THREE.Color( "setcolor" ); hemlight.color = new THREE.Color( "setcolor" );';
     code = code.replace(/setcolor/g, colour_color);
@@ -830,7 +1011,6 @@ button span span {
 
   javascript.javascriptGenerator.forBlock['input_keypressed'] = function (block, generator) {
     var dropdown_name = block.getFieldValue('NAME');
-    // i forgor to change field name. too lazy to do so.
     var code = 'keysdown.includes("key_val")';
     code = code.replace(/key_val/g, dropdown_name);
     // TODO: Change ORDER_NONE to the correct strength.
@@ -850,7 +1030,9 @@ button span span {
         .appendField("Add")
         .appendField(new Blockly.FieldDropdown([["wireframe", "wireframe"], ["transparent", "transparent"], ["shiny", "shiny"]]), "effect")
         .appendField("Effect to")
-        .appendField(new Blockly.FieldTextInput("object"), "object");
+        this.appendValueInput("name")
+        .setCheck("String");
+      this.setInputsInline(true);
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(270);
@@ -861,7 +1043,7 @@ button span span {
 
   javascript.javascriptGenerator.forBlock['set_obj_effect'] = function (block, generator) {
     var dropdown_effect = block.getFieldValue('effect');
-    var text_object = block.getFieldValue('object');
+    var text_object = btoa(generator.valueToCode(block, 'name', javascript.Order.ATOMIC).replace(/'/g, "")).replace(/=/g, "");;
     // TODO: Assemble javascript into code variable.
     var code = ""
     if(dropdown_effect == "wireframe") {
@@ -878,8 +1060,8 @@ button span span {
   };
 
   javascript.javascriptGenerator.forBlock['rot_object_around'] = function(block, generator) {
-    var text_object = block.getFieldValue('object');
-    var text_lookobject = block.getFieldValue('lookobject');
+    var text_object = generator.valueToCode(block, 'object', javascript.Order.ATOMIC).replace(/'/g, "");
+    var text_lookobject = generator.valueToCode(block, 'lookobject', javascript.Order.ATOMIC).replace(/'/g, "");
     // TODO: Assemble javascript into code variable.
     var code = 'object.lookAt(lookobjct.position);';
     code = code.replace(/object/g, text_object);
@@ -893,6 +1075,82 @@ button span span {
     // TODO: Change ORDER_NONE to the correct strength.
     return [code, javascript.Order.ATOMIC];
   };
+
+  //UI
+
+  Blockly.Blocks['ui_draw_text'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Draw Text:");
+    this.appendValueInput("text")
+        .setCheck(null);
+    this.appendValueInput("posx")
+        .setCheck("Number")
+        .appendField("X:");
+    this.appendValueInput("posy")
+        .setCheck("Number")
+        .appendField("Y:");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['ui_color'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("UI color")
+    this.appendValueInput("color")
+        .setCheck("Colour");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("The universal color for all UI items");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['clear_ui'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Clear UI");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+javascript.javascriptGenerator.forBlock['ui_draw_text'] = function(block, generator) {
+  var value_text = btoa(generator.valueToCode(block, 'text', javascript.Order.ATOMIC));
+  var value_posx = generator.valueToCode(block, 'posx', javascript.Order.ATOMIC);
+  var value_posy = generator.valueToCode(block, 'posy', javascript.Order.ATOMIC);
+  // TODO: Assemble javascript into code variable.
+  var code = 'UIobj.push(["text", ["set_text", tx_set, ty_set]]);';
+  code = code.replace("ty_set", value_posy);
+  code = code.replace("tx_set", value_posx);
+  code = code.replace("set_text", value_text);
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock['ui_color'] = function(block, generator) {
+  var colour_color = generator.valueToCode(block, 'color', javascript.Order.ATOMIC).replace(/'/g, "");
+  // TODO: Assemble javascript into code variable.
+  var code = 'UIobj[0][0] = "set_color";';
+  code = code.replace("set_color", colour_color);
+  return code;
+};
+
+javascript.javascriptGenerator.forBlock['clear_ui'] = function(block, generator) {
+  // TODO: Assemble javascript into code variable.
+  var code = 'UIobj = [["#ffffff"]];';
+  return code;
+};
   
   function gencode() {
     const scene = new THREE.Scene();
@@ -990,7 +1248,17 @@ button span span {
   } else {
     console.log("uo");
   }
-  </script>
-<script name="uihandler">
 
-</script>
+  function rfui() {
+      ctx.clearRect(0, 0, uicanvas.width, uicanvas.height);
+      for(var i = 1; i < UIobj.length; i++) {
+        if(UIobj[i][0] == "text") {
+          ctx.fillStyle = UIobj[0][0];
+          ctx.font = "10px Arial";
+          ctx.fillText(atob(UIobj[i][1][0]), UIobj[i][1][1], UIobj[i][1][2]); 
+        }
+      }
+  }
+  setInterval(rfui, 10);
+
+  </script>
